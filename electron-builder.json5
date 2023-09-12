@@ -11,7 +11,9 @@
   "directories": {
     "output": "release/${version}"
   },
-  // "files": [],
+  "files": [
+    "!source"
+  ],
   "mac": {
     // TODO:
     "icon": "./public/favicon.png",

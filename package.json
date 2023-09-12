@@ -1,11 +1,11 @@
 {
-  "name": "timeline",
+  "name": "huaxia-history",
   "version": "1.0.0",
   "description": "Timeline",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder -mw"
+    "build": "electron-builder"
   },
   "keywords": [],
   "author": "GitHub",
