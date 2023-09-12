@@ -1,0 +1,17 @@
+{
+  "name": "timeline",
+  "version": "1.0.0",
+  "description": "Timeline",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder -mw"
+  },
+  "keywords": [],
+  "author": "GitHub",
+  "license": "",
+  "devDependencies": {
+    "electron": "^26.0.0",
+    "electron-builder": "^24.6.4"
+  }
+}

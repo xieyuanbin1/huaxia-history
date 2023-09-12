@@ -1,0 +1,60 @@
+/**
+ * @see https://www.electron.build/configuration/configuration
+ */
+{
+  "appId": "com.nic.history",
+  "productName": "History",
+  "copyright": "Copyright ©️ 2023 NIC",
+  "asar": true,
+  "asarUnpack": ["**/*.node"],
+  "icon": "public/favicon.ico",
+  "directories": {
+    "output": "release/${version}"
+  },
+  "files": [
+    "dist-electron",
+    "dist"
+  ],
+  "mac": {
+    // TODO:
+    "icon": "./public/favicon.png",
+    "artifactName": "${productName}_${os}_${version}_${arch}.${ext}",
+    "target": {
+      "target": "dmg",
+      "arch": ["x64", "arm64"]
+    },
+    "hardenedRuntime": true,
+  },
+  "win": {
+    // TODO: 
+    "icon": "./public/favicon.ico",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ],
+    "artifactName": "${productName}_${os}_${version}.${ext}"
+  },
+  "linux": {
+    "icon": "./public/favicon.png",
+    "artifactName": "${productName}_${os}_${version}_${arch}.${ext}",
+    "target": [
+      {
+        "target": "pacman",
+        "arch": ["x64", "arm64"]
+      },
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": true,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": false,
+    "createDesktopShortcut": true, // 创建桌面图标
+    "createStartMenuShortcut": true, // 创建开始菜单图标
+    "runAfterFinish": true, // 安装完成后运行
+  }
+}
