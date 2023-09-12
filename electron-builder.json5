@@ -11,10 +11,7 @@
   "directories": {
     "output": "release/${version}"
   },
-  "files": [
-    "dist-electron",
-    "dist"
-  ],
+  // "files": [],
   "mac": {
     // TODO:
     "icon": "./public/favicon.png",
