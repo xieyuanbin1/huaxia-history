@@ -12,7 +12,8 @@
     "output": "release/${version}"
   },
   "files": [
-    "!source"
+    "!source",
+    "!release"
   ],
   "mac": {
     // TODO:
