@@ -1,14 +1,14 @@
 {
   "name": "huaxia-history",
   "version": "1.0.2",
-  "description": "Timeline",
+  "description": "huaxia history timeline",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder"
   },
   "keywords": [],
-  "author": "GitHub",
+  "author": "xieyuanbin",
   "license": "",
   "devDependencies": {
     "electron": "^26.0.0",
