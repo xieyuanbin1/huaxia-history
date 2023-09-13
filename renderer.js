@@ -28,7 +28,7 @@
 const options = {
   hash_bookmark: false,
   // use_bc: true,
-  initial_zoom: 5,
+  initial_zoom: 21,
   language: 'zh-cn'
 };
 
