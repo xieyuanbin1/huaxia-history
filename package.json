@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "prebuild": "git submodule update --init",
     "build": "electron-builder"
   },
   "keywords": [],

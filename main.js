@@ -95,7 +95,7 @@ app.on('child-process-gone', (event, details) => {
 ipcMain.handle('time:dynasty', (_, args) => {
   console.log('args::', args)
   const { dynasty } = args;
-  const file = join(__dirname, `data/${dynasty}/content.json`)
+  const file = join(__dirname, `huaxia-data/data/${dynasty}/content.json`)
   const stat = statSync(file)
   if (stat?.isFile()) {
     const data = readFileSync(file)

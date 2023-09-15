@@ -1,0 +1,3 @@
+[submodule "huaxia-data"]
+	path = huaxia-data
+	url = git@github.com:xieyuanbin1/huaxia-data.git
