@@ -37,10 +37,6 @@ jobs:
         with: 
           path: release
 
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: release
-
       - name: Cleanup Artifacts for Windows
         if: matrix.os == 'windows-latest'
         run: |
@@ -51,7 +47,6 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           ls -l
-          ls release -l
           npx rimraf "release/**/!(*.dmg)"
 
       - name: upload artifacts
