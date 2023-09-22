@@ -42,6 +42,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           ls -l
+          ls release -l
           npx rimraf "release/**/!(*.dmg)"
 
       - name: upload artifacts
