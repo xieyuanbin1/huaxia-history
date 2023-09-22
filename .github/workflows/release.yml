@@ -32,11 +32,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: download
-        uses: actions/download-artifact@v3
-        with: 
-          path: release
-
       - name: Cleanup Artifacts for Windows
         if: matrix.os == 'windows-latest'
         run: |
@@ -44,22 +39,21 @@ jobs:
           npx rimraf "release/**/!(*.exe)"
 
       - name: Cleanup Artifacts for MacOS
-        env:
-          CC: ${{ toJson(github) }}
         if: matrix.os == 'macos-latest'
         run: |
           ls -l
-          echo "$CC"
           npx rimraf "release/**/!(*.dmg)"
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}
-          path: release
+          path: |
+            release/**/History_*.dmg
+            release/**/History_*.exe
 
       - name: release
-        uses: softprops/action-gh-release@v0.1.14
+        uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: "release/**"
