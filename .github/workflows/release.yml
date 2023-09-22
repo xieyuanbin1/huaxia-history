@@ -44,10 +44,12 @@ jobs:
           npx rimraf "release/**/!(*.exe)"
 
       - name: Cleanup Artifacts for MacOS
+        env:
+          CC: ${{ toJson(github) }}
         if: matrix.os == 'macos-latest'
         run: |
           ls -l
-          echo ${{github}}
+          echo "$CC"
           npx rimraf "release/**/!(*.dmg)"
 
       - name: upload artifacts
