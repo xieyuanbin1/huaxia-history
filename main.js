@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const { readFileSync, statSync } = require('fs');
 const { release } = require('node:os');
 const { join } = require('path')
@@ -55,10 +55,14 @@ function createWindow () {
   });
 
   // Make all links open with the browser, not with the application
-  mainWindow.webContents.on('will-navigate', (event, url) => {
-    event.preventDefault();
-    shell.openExternal(url);
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('https:')) shell.openExternal(url);
+    return { action: 'deny' };
   });
+  // mainWindow.webContents.on('will-navigate', (event, url) => {
+    // event.preventDefault();
+    // shell.openExternal(url);
+  // });
 }
 
 // This method will be called when Electron has finished
