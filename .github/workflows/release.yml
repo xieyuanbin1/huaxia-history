@@ -52,7 +52,6 @@ jobs:
           name: ${{ matrix.os }}
           path: |
             release/**/History_*.dmg
-            release/**/History_*.exe
 
       - name: release
         uses: softprops/action-gh-release@v1
