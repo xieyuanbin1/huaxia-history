@@ -6,57 +6,21 @@ on:
       - "v*.*.*"
 
 jobs:
-  buildMac:
-    name: build and release macos app
-    runs-on: macos-latest
+  buildApp:
+    name: build and release app
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
 
     steps:
       - name: Check out git repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3.0.0
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Electron App
-        run: npm run build
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-      - name: Cleanup Artifacts for MacOS
-        run: |
-          # npx rimraf "release/**/!(*.dmg)"
-          echo "ls -l"
-
-      - name: upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          # name: macos
-          path: |
-            release/**/History_*.dmg
-
-      - name: release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: "release/**"
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-  buildWin:
-    name: build and release windows app
-    runs-on: windows-latest
-
-    steps:
-      - name: Check out git repository
-        uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v3.0.0
         with:
           node-version: "18"
 
@@ -69,19 +33,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Cleanup Artifacts for Windows
+        if: matrix.os == 'windows-latest'
         run: |
-          dir
-          # npx rimraf "release/**/!(*.exe)"
+          # npx rimraf "dist/!(*.exe)"
+          
+      - name: Cleanup Artifacts for MacOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          # npx rimraf "dist/!(*.dmg)"
 
       - name: upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.0.0
         with:
-          # name: win32
+          name: ${{ matrix.os }}
           path: |
+            release/**/History_*.dmg
             release/**/History_*.exe
 
       - name: release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v0.1.14
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: "release/**"
