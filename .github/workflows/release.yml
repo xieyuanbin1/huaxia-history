@@ -41,7 +41,7 @@ jobs:
       - name: Cleanup Artifacts for MacOS
         if: matrix.os == 'macos-latest'
         run: |
-          npx rimraf "release/**/!(*.dmg)"
+          # npx rimraf "release/**/!(*.dmg)"
           echo "ls -l"
           ls -l
           echo "ls release"
