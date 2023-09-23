@@ -38,7 +38,7 @@ jobs:
           ls release/1.0.5
 
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           # name: macos
           path: |
@@ -79,7 +79,7 @@ jobs:
           # npx rimraf "release/**/!(*.exe)"
 
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           # name: win32
           path: |
