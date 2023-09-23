@@ -40,9 +40,9 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: macos
+          # name: macos
           path: |
-            release
+            release/**/History_*.dmg
 
       - name: release
         uses: softprops/action-gh-release@v1
@@ -81,9 +81,9 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: win32
+          # name: win32
           path: |
-            release
+            release/**/History_*.exe
 
       - name: release
         uses: softprops/action-gh-release@v1
