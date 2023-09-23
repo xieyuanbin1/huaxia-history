@@ -42,7 +42,7 @@ jobs:
         with:
           name: macos
           path: |
-            release/**/History_*.dmg
+            release
 
       - name: release
         uses: softprops/action-gh-release@v1
@@ -83,7 +83,7 @@ jobs:
         with:
           name: win32
           path: |
-            release/**/History_*.exe
+            release
 
       - name: release
         uses: softprops/action-gh-release@v1
