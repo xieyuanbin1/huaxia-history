@@ -41,10 +41,13 @@ jobs:
       - name: Cleanup Artifacts for MacOS
         if: matrix.os == 'macos-latest'
         run: |
-          ls -l
-          ls release
-          ls release/1.0.5
           npx rimraf "release/**/!(*.dmg)"
+          echo "ls -l"
+          ls -l
+          echo "ls release"
+          ls release
+          echo "ls release/1.0.5"
+          ls release/1.0.5
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3
