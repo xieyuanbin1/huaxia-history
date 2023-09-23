@@ -6,14 +6,55 @@ on:
       - master
 
 jobs:
-  release:
-    name: build and release electron app
-    runs-on: ${{ matrix.os }}
+  buildMac:
+    name: build and release macos app
+    runs-on: macos-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, macos-latest]
+    steps:
+      - name: Check out git repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Electron App
+        run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Cleanup Artifacts for MacOS
+        run: |
+          # npx rimraf "release/**/!(*.dmg)"
+          echo "ls -l"
+          ls -l
+          echo "ls release"
+          ls release
+          echo "ls release/1.0.5"
+          ls release/1.0.5
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos
+          path: |
+            release/**/History_*.dmg
+
+      - name: release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: "release/**"
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+  buildWin:
+    name: build and release windows app
+    runs-on: windows-latest
 
     steps:
       - name: Check out git repository
@@ -33,28 +74,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Cleanup Artifacts for Windows
-        if: matrix.os == 'windows-latest'
         run: |
           dir
-          npx rimraf "release/**/!(*.exe)"
-
-      - name: Cleanup Artifacts for MacOS
-        if: matrix.os == 'macos-latest'
-        run: |
-          # npx rimraf "release/**/!(*.dmg)"
-          echo "ls -l"
-          ls -l
-          echo "ls release"
-          ls release
-          echo "ls release/1.0.5"
-          ls release/1.0.5
+          # npx rimraf "release/**/!(*.exe)"
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.os }}
+          name: win32
           path: |
-            release/**/History_*.dmg
+            release/**/History_*.exe
 
       - name: release
         uses: softprops/action-gh-release@v1
