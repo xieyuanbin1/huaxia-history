@@ -64,6 +64,13 @@ jobs:
         with:
           files: |
             release/**/History_*.exe
+            release/**/History_*.exe.blockmap
             release/**/History_*.dmg
+            release/**/History_*.dmg.blockmap
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Delete Draft Releases
+        uses: hugo19941994/delete-draft-releases@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
