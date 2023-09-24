@@ -42,21 +42,21 @@ jobs:
         run: |
           # npx rimraf "release/**/!(*.dmg)"
 
-      - name: upload artifacts windows
-        uses: actions/upload-artifact@v3.0.0
-        if: matrix.os == 'windows-latest'
-        with:
-          name: ${{ matrix.os }}
-          path: |
-            release/**/History_*.exe
+      # - name: upload artifacts windows
+      #   uses: actions/upload-artifact@v3.0.0
+      #   if: matrix.os == 'windows-latest'
+      #   with:
+      #     name: ${{ matrix.os }}
+      #     path: |
+      #       release/**/History_*.exe
 
-      - name: upload artifacts macos
-        uses: actions/upload-artifact@v3.0.0
-        if: matrix.os == 'macos-latest'
-        with:
-          name: ${{ matrix.os }}
-          path: |
-            release/**/History_*.dmg
+      # - name: upload artifacts macos
+      #   uses: actions/upload-artifact@v3.0.0
+      #   if: matrix.os == 'macos-latest'
+      #   with:
+      #     name: ${{ matrix.os }}
+      #     path: |
+      #       release/**/History_*.dmg
 
       - name: release
         uses: softprops/action-gh-release@v0.1.14
