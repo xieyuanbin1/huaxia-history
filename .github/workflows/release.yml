@@ -42,35 +42,35 @@ jobs:
         run: |
           # npx rimraf "release/**/!(*.dmg)"
 
-      # - name: upload artifacts windows
-      #   uses: actions/upload-artifact@v3.0.0
-      #   if: matrix.os == 'windows-latest'
-      #   with:
-      #     name: ${{ matrix.os }}
-      #     path: |
-      #       release/**/History_*.exe
-
-      # - name: upload artifacts macos
-      #   uses: actions/upload-artifact@v3.0.0
-      #   if: matrix.os == 'macos-latest'
-      #   with:
-      #     name: ${{ matrix.os }}
-      #     path: |
-      #       release/**/History_*.dmg
-
-      - name: release
-        uses: softprops/action-gh-release@v0.1.14
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: upload artifacts windows
+        uses: actions/upload-artifact@v3.0.0
+        if: matrix.os == 'windows-latest'
         with:
-          files: |
+          name: ${{ matrix.os }}
+          path: |
             release/**/History_*.exe
-            release/**/History_*.exe.blockmap
-            release/**/History_*.dmg
-            release/**/History_*.dmg.blockmap
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Delete Draft Releases
-        uses: hugo19941994/delete-draft-releases@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      - name: upload artifacts macos
+        uses: actions/upload-artifact@v3.0.0
+        if: matrix.os == 'macos-latest'
+        with:
+          name: ${{ matrix.os }}
+          path: |
+            release/**/History_*.dmg
+
+      # - name: release
+      #   uses: softprops/action-gh-release@v0.1.14
+      #   if: startsWith(github.ref, 'refs/tags/')
+      #   with:
+      #     files: |
+      #       release/**/History_*.exe
+      #       release/**/History_*.exe.blockmap
+      #       release/**/History_*.dmg
+      #       release/**/History_*.dmg.blockmap
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      # - name: Delete Draft Releases
+      #   uses: hugo19941994/delete-draft-releases@v1.0.1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
