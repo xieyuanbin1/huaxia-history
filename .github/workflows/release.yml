@@ -50,7 +50,7 @@ jobs:
           path: |
             release/**/History_*.exe
 
-      - name: upload artifacts windows
+      - name: upload artifacts macos
         uses: actions/upload-artifact@v3.0.0
         if: matrix.os == 'macos-latest'
         with:
@@ -62,6 +62,8 @@ jobs:
         uses: softprops/action-gh-release@v0.1.14
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: "release/**"
+          files: |
+            release/**/History_*.exe
+            release/**/History_*.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
