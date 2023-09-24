@@ -35,22 +35,28 @@ jobs:
       - name: Cleanup Artifacts for Windows
         if: matrix.os == 'windows-latest'
         run: |
-          npx rimraf "release/**/!(*.exe)"
-          dir release
+          # npx rimraf "release/**/!(*.exe)"
           
       - name: Cleanup Artifacts for MacOS
         if: matrix.os == 'macos-latest'
         run: |
-          npx rimraf "release/**/!(*.dmg)"
-          ls release
+          # npx rimraf "release/**/!(*.dmg)"
 
-      - name: upload artifacts
+      - name: upload artifacts windows
         uses: actions/upload-artifact@v3.0.0
+        if: matrix.os == 'windows-latest'
+        with:
+          name: ${{ matrix.os }}
+          path: |
+            release/**/History_*.exe
+
+      - name: upload artifacts windows
+        uses: actions/upload-artifact@v3.0.0
+        if: matrix.os == 'macos-latest'
         with:
           name: ${{ matrix.os }}
           path: |
             release/**/History_*.dmg
-            release/**/History_*.exe
 
       - name: release
         uses: softprops/action-gh-release@v0.1.14
