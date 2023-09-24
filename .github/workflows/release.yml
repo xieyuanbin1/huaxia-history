@@ -17,10 +17,10 @@ jobs:
 
     steps:
       - name: Check out git repository
-        uses: actions/checkout@v3.0.0
+        uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v3.0.0
+        uses: actions/setup-node@v3
         with:
           node-version: "18"
 
@@ -32,18 +32,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Cleanup Artifacts for Windows
-        if: matrix.os == 'windows-latest'
-        run: |
-          # npx rimraf "release/**/!(*.exe)"
-          
-      - name: Cleanup Artifacts for MacOS
-        if: matrix.os == 'macos-latest'
-        run: |
-          # npx rimraf "release/**/!(*.dmg)"
-
       - name: upload artifacts windows
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v3
         if: matrix.os == 'windows-latest'
         with:
           name: ${{ matrix.os }}
@@ -51,26 +41,9 @@ jobs:
             release/**/History_*.exe
 
       - name: upload artifacts macos
-        uses: actions/upload-artifact@v3.0.0
+        uses: actions/upload-artifact@v3
         if: matrix.os == 'macos-latest'
         with:
           name: ${{ matrix.os }}
           path: |
             release/**/History_*.dmg
-
-      # - name: release
-      #   uses: softprops/action-gh-release@v0.1.14
-      #   if: startsWith(github.ref, 'refs/tags/')
-      #   with:
-      #     files: |
-      #       release/**/History_*.exe
-      #       release/**/History_*.exe.blockmap
-      #       release/**/History_*.dmg
-      #       release/**/History_*.dmg.blockmap
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-      # - name: Delete Draft Releases
-      #   uses: hugo19941994/delete-draft-releases@v1.0.1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
