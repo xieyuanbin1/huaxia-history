@@ -46,9 +46,10 @@ jobs:
         if: matrix.os == 'macos-latest'
         with:
           name: ${{ matrix.os }}
-          retention-days: 5
+          retention-days: 5  # artifact 保留5天
           path: |
             release/**/History_*.dmg
 
+      # TODO: 目前不知道这个到底下载到哪里了，无法获取 runner 信息
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v3
