@@ -109,7 +109,7 @@ app.on('child-process-gone', (event, details) => {
 
 // 检测更新
 // 设置自动下载为false
-// autoUpdater.autoDownload = false;
+autoUpdater.autoDownload = false;
 // 检测下载错误
 autoUpdater.on('error', (error) => {
   dialog.showErrorBox('下载错误', '更新文件下载错误')
@@ -136,7 +136,7 @@ autoUpdater.on('update-available', () => {
   
   // 也可以默认直接更新，二选一即可
   // autoUpdater.downloadUpdate();
-  // sendUpdateMessage(message.updateAva);
+  // log.info('');
 });
 // 检测到不需要更新时
 autoUpdater.on('update-not-available', () => {
