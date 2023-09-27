@@ -7,7 +7,7 @@ const { autoUpdater } = require('electron-updater');
 const os = require('os');
 const Log = require('electron-log');
 
-process.env.PUBLIC = join('./public');
+process.env.PUBLIC = join(__dirname, 'public');
 
 // 定义 LOG 方法
 Log.initialize();
