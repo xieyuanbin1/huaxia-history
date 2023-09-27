@@ -17,7 +17,7 @@ Log.transports.file.level = 'silly';
 // Log.transports.console.level = false    // 禁用控制台日志输出
 Log.transports.file.maxSize = 1048576; // 日志文件大小 达到上限之后会备份为 main.old.log 有且仅有一个备份
 // 重定义日志文件路径
-Log.transports.file.resolvePathFn = () => join(app.getPath('appData'), 'huaxia_history/logs/main.log');
+Log.transports.file.resolvePathFn = () => join(app.getPath('userData'), 'logs/main.log');
 const log = Log.scope('main');
 
 // 定义 FAVICON
