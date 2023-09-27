@@ -198,7 +198,7 @@ const menu = [
   }
 ];
 if (process.platform === 'darwin') {
-  menu.push(osxMenu);
+  menu.unshift(osxMenu);
 }
 const menuList = Menu.buildFromTemplate(menu);
 Menu.setApplicationMenu(menuList);
@@ -226,7 +226,7 @@ function show(title, detail, type = 'info') {
     icon: join(__dirname, 'public/favicon.png'),
     title: title,
     type: type,
-    message: 'vMessenger',
+    message: 'History Timeline',
     detail: detail
   });
 }
