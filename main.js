@@ -217,8 +217,8 @@ Menu.setApplicationMenu(menuList);
 // code. You can also put them in separate files and require them here.
 
 ipcMain.handle('time:dynasty', (_, args) => {
-  log.info('args::', args)
   const { dynasty } = args;
+  log.info('dynasty >>', dynasty)
   const file = join(__dirname, `huaxia-data/data/${dynasty}/content.json`)
   const stat = statSync(file)
   if (stat?.isFile()) {
