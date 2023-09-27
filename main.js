@@ -5,8 +5,20 @@ const { release } = require('node:os');
 const { join } = require('path');
 const { autoUpdater } = require('electron-updater');
 const os = require('os');
+const Log = require('electron-log');
 
 process.env.PUBLIC = join('./public');
+
+// 定义 LOG 方法
+Log.initialize();
+Log.transports.file.level = 'silly';
+// Log.transports.console.level = 'silly'
+// Log.transports.file.level = false       // 禁用文件日志输出
+// Log.transports.console.level = false    // 禁用控制台日志输出
+Log.transports.file.maxSize = 1048576; // 日志文件大小 达到上限之后会备份为 main.old.log 有且仅有一个备份
+// 重定义日志文件路径
+Log.transports.file.resolvePathFn = () => join(app.getPath('appData'), 'huaxia_history/logs/main.log');
+const log = Log.scope('main');
 
 // 定义 FAVICON
 const FAVICON = join(process.env.PUBLIC, 'favicon.ico');
@@ -104,7 +116,7 @@ autoUpdater.on('error', (error) => {
 });
 // 检测是否需要更新
 autoUpdater.on('checking-for-update', () => {
-  console.log('[LOG] 检测更新中...');
+  log.info('[LOG] 检测更新中...');
 });
 // 检测到可以更新时
 autoUpdater.on('update-available', () => {
@@ -118,7 +130,7 @@ autoUpdater.on('update-available', () => {
     if (response === 0) {
       // 下载更新
       autoUpdater.downloadUpdate();
-      console.log('[LOG] 更新中...');
+      log.info('[LOG] 更新中...');
     }
   });
   
@@ -129,12 +141,12 @@ autoUpdater.on('update-available', () => {
 // 检测到不需要更新时
 autoUpdater.on('update-not-available', () => {
   // 这里可以做静默处理，不给渲染进程发通知，或者通知渲染进程当前已是最新版本，不需要更新
-  console.log('[LOG] 已经是最新版本，不需要更新');
+  log.info('[LOG] 已经是最新版本，不需要更新');
 });
 // 更新下载进度
 autoUpdater.on('download-progress', (progress) => {
   // 直接把当前的下载进度发送给渲染进程即可，有渲染层自己选择如何做展示
-  console.log('downloadProgress:', progress);
+  log.info('downloadProgress:', progress);
 });
 // 当需要更新的内容下载完成后
 autoUpdater.on('update-downloaded', () => {
@@ -179,7 +191,10 @@ const osxMenu = {
 const menu = [
   {
     label: '帮助',
-    submenu: [{ label: '检查更新', click: () => { autoUpdater.checkForUpdates(); } }]
+    submenu: [
+      { label: '检查更新', click: () => { autoUpdater.checkForUpdates(); } },
+      { label: '调试控制台', role: 'toggleDevTools' }
+    ]
   }
 ];
 if (process.platform === 'darwin') {
@@ -192,7 +207,7 @@ Menu.setApplicationMenu(menuList);
 // code. You can also put them in separate files and require them here.
 
 ipcMain.handle('time:dynasty', (_, args) => {
-  console.log('args::', args)
+  log.info('args::', args)
   const { dynasty } = args;
   const file = join(__dirname, `huaxia-data/data/${dynasty}/content.json`)
   const stat = statSync(file)

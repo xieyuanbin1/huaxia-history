@@ -37,6 +37,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         with:
           name: ${{ matrix.os }}
+          retention-days: 5
           path: |
             release/**/History_*.exe
 
@@ -45,6 +46,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         with:
           name: ${{ matrix.os }}
+          retention-days: 5  # artifact 保留5天
           path: |
             release/**/History_*.dmg
 

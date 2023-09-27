@@ -1,6 +1,6 @@
 {
   "name": "huaxia-history",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "huaxia history timeline",
   "main": "main.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "electron-builder": "^24.6.4"
   },
   "dependencies": {
+    "electron-log": "5.0.0-rc.1",
     "electron-updater": "^6.1.4"
   }
 }

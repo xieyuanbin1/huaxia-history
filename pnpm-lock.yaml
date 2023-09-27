@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  electron-log:
+    specifier: 5.0.0-rc.1
+    version: 5.0.0-rc.1
   electron-updater:
     specifier: ^6.1.4
     version: 6.1.4
@@ -676,6 +679,11 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /electron-log@5.0.0-rc.1:
+    resolution: {integrity: sha512-zRqKr+p9V8Lw1DWQtj6pxTccdLT1GQySpYhd0AvuSDOlxhanQJgeK1f3eSm5DsYbfzg7w8HVvaY+1fkdbiwO3Q==}
+    engines: {electron: '>= 13', node: '>= 14'}
+    dev: false
 
   /electron-publish@24.5.0:
     resolution: {integrity: sha512-zwo70suH15L15B4ZWNDoEg27HIYoPsGJUF7xevLJLSI7JUPC8l2yLBdLGwqueJ5XkDL7ucYyRZzxJVR8ElV9BA==}
