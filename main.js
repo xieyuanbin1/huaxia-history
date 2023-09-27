@@ -119,6 +119,7 @@ app.on('child-process-gone', (event, details) => {
 autoUpdater.autoDownload = false;
 // 检测下载错误
 autoUpdater.on('error', (error) => {
+  log.info('[LOG] 更新错误:', error);
   dialog.showErrorBox('下载错误', '更新文件下载错误')
 });
 // 检测是否需要更新
@@ -149,10 +150,10 @@ autoUpdater.on('update-available', () => {
 autoUpdater.on('update-not-available', () => {
   // 这里可以做静默处理，不给渲染进程发通知，或者通知渲染进程当前已是最新版本，不需要更新
   log.info('[LOG] 已经是最新版本，不需要更新');
-  dialog.showMessageBox({
-    title: '检查更新',
-    message: '已经是最新版本，不需要更新'
-  })
+  // dialog.showMessageBox({
+  //   title: '检查更新',
+  //   message: '已经是最新版本，不需要更新'
+  // })
 });
 // 更新下载进度
 autoUpdater.on('download-progress', (progress) => {
