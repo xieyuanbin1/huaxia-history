@@ -183,7 +183,7 @@ const osxMenu = {
   label: app.getName(),
   submenu: [
     {
-      label: `退出 ${app.getName()}`,
+      label: `退出历史时间线`,
       accelerator: 'CmdOrCtrl+Q',
       click: () => {
         app.quit();
@@ -195,7 +195,7 @@ const menu = [
   {
     label: '帮助',
     submenu: [
-      { label: `关于 ${app.getName()}`, click: () => show('About', aboutMessage, 'info') },
+      { label: `关于`, click: () => show('关于历史时间线', aboutMessage, 'info') },
       { label: '检查更新', click: () => { autoUpdater.checkForUpdates(); } },
       { label: '调试控制台', role: 'toggleDevTools' }
     ]

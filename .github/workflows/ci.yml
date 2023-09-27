@@ -39,7 +39,7 @@ jobs:
           name: ${{ matrix.os }}
           retention-days: 5
           path: |
-            release/**/History_*.exe
+            release/**/HuaXia_History_*.exe
 
       - name: upload artifacts macos
         uses: actions/upload-artifact@v3
@@ -48,7 +48,7 @@ jobs:
           name: ${{ matrix.os }}
           retention-days: 5  # artifact 保留5天
           path: |
-            release/**/History_*.dmg
+            release/**/HuaXia_History_*.dmg
 
       # TODO: 目前不知道这个到底下载到哪里了，无法获取 runner 信息
       - name: Download all workflow run artifacts

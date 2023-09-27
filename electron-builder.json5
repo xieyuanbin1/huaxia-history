@@ -3,7 +3,7 @@
  */
 {
   "appId": "com.nic.history",
-  "productName": "历史时间线",
+  "productName": "HuaXia_History",
   "copyright": "Copyright ©️ 2023 NIC",
   "asar": true,
   "asarUnpack": ["**/*.node"],
