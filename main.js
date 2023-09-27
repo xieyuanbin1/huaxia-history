@@ -92,6 +92,11 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+
+  // 检查更新
+  if (app.isPackaged) {
+    autoUpdater.checkForUpdates();
+  }
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common

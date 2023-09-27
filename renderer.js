@@ -50,13 +50,14 @@ $(document).ready(async function() {
       const data = await loadTime(hash);
       const timeline = new TL.Timeline("timeline", data, options);
     } else {
+      const target = $("#dynasty span")[0];
+      $(target).css('border-bottom', '1px solid black');
       const data = await loadTime(DEFUALT_DYNATY);
       const timeline = new TL.Timeline("timeline", data, options);
     }
 
     $("#dynasty span").bind('click', (e) => {
       const { target } = e;
-      console.log('[click]:', target.dataset['dynasty'])
       $("#dynasty span").css('border-bottom', '');
       $(target).css('border-bottom', '1px solid black');
       const dynasty = target.dataset['dynasty'];
@@ -72,7 +73,6 @@ $(document).ready(async function() {
 window.onhashchange = async function() {
   if ($(location).prop('hash')) {
     const hash = $(location).prop('hash').substring(1);
-    console.log('hash::::', hash)
     const data = await loadTime(hash);
     const timeline = new TL.Timeline("timeline", data, options);
   }
