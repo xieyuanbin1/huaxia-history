@@ -42,9 +42,11 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0);
 }
 
+let win = null;
+
 function createWindow () {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  win = new BrowserWindow({
     icon: FAVICON,
     width: 1280,
     minWidth: 1280,
@@ -58,22 +60,22 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  win.loadFile('index.html')
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   // Test actively push message to the Electron-Renderer
-  mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow?.webContents.send('main-process-message', new Date().toLocaleString());
+  win.webContents.on('did-finish-load', () => {
+    win?.webContents.send('main-process-message', new Date().toLocaleString());
   });
 
   // Make all links open with the browser, not with the application
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+  win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https:')) shell.openExternal(url);
     return { action: 'deny' };
   });
-  // mainWindow.webContents.on('will-navigate', (event, url) => {
+  // win.webContents.on('will-navigate', (event, url) => {
     // event.preventDefault();
     // shell.openExternal(url);
   // });
@@ -83,7 +85,7 @@ function createWindow () {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createWindow()
+  win = createWindow();
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -107,7 +109,7 @@ app.on('child-process-gone', (event, details) => {
   console.warn('app:child-process-gone', event, details);
 });
 
-// 检测更新
+// ************************** 检测更新 ******************************************
 // 设置自动下载为false
 autoUpdater.autoDownload = false;
 // 检测下载错误
@@ -147,10 +149,12 @@ autoUpdater.on('update-not-available', () => {
 autoUpdater.on('download-progress', (progress) => {
   // 直接把当前的下载进度发送给渲染进程即可，有渲染层自己选择如何做展示
   log.info('downloadProgress:', progress);
+  win?.setProgressBar(progress.percent * 0.01);
 });
 // 当需要更新的内容下载完成后
 autoUpdater.on('update-downloaded', () => {
   // 给用户一个提示，然后重启应用；或者直接重启也可以，只是这样会显得很突兀
+  win?.setProgressBar(-1);
   dialog.showMessageBox({
       title: '安装更新',
       message: '更新下载完毕，应用将重启并进行安装'
@@ -160,7 +164,7 @@ autoUpdater.on('update-downloaded', () => {
   });
 });
 
-// 菜单栏
+// **************************** 菜单栏 ******************************************
 const aboutMessage = `
 Version: ${app.getVersion()}
 Chrome: ${process.versions.chrome}
@@ -175,11 +179,6 @@ const osxMenu = {
   label: app.getName(),
   submenu: [
     {
-      label: `关于 ${app.getName()}`,
-      click: () => show('About', aboutMessage, 'info')
-    },
-    { type: 'separator' },
-    {
       label: `退出 ${app.getName()}`,
       accelerator: 'CmdOrCtrl+Q',
       click: () => {
@@ -192,6 +191,7 @@ const menu = [
   {
     label: '帮助',
     submenu: [
+      { label: `关于 ${app.getName()}`, click: () => show('About', aboutMessage, 'info') },
       { label: '检查更新', click: () => { autoUpdater.checkForUpdates(); } },
       { label: '调试控制台', role: 'toggleDevTools' }
     ]
