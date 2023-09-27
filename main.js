@@ -1,8 +1,10 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog, Menu } = require('electron');
 const { readFileSync, statSync } = require('fs');
 const { release } = require('node:os');
-const { join } = require('path')
+const { join } = require('path');
+const { autoUpdater } = require('electron-updater');
+const os = require('os');
 
 process.env.PUBLIC = join('./public');
 
@@ -93,6 +95,99 @@ app.on('child-process-gone', (event, details) => {
   console.warn('app:child-process-gone', event, details);
 });
 
+// 检测更新
+// 设置自动下载为false
+// autoUpdater.autoDownload = false;
+// 检测下载错误
+autoUpdater.on('error', (error) => {
+  dialog.showErrorBox('下载错误', '更新文件下载错误')
+});
+// 检测是否需要更新
+autoUpdater.on('checking-for-update', () => {
+  console.log('[LOG] 检测更新中...');
+});
+// 检测到可以更新时
+autoUpdater.on('update-available', () => {
+  // 这里我们可以做一个提示，让用户自己选择是否进行更新
+  dialog.showMessageBox({
+    type: 'info',
+    title: '应用有新的更新',
+    message: '发现新版本，是否现在更新？',
+    buttons: ['是', '否']
+  }).then(({ response }) => {
+    if (response === 0) {
+      // 下载更新
+      autoUpdater.downloadUpdate();
+      console.log('[LOG] 更新中...');
+    }
+  });
+  
+  // 也可以默认直接更新，二选一即可
+  // autoUpdater.downloadUpdate();
+  // sendUpdateMessage(message.updateAva);
+});
+// 检测到不需要更新时
+autoUpdater.on('update-not-available', () => {
+  // 这里可以做静默处理，不给渲染进程发通知，或者通知渲染进程当前已是最新版本，不需要更新
+  console.log('[LOG] 已经是最新版本，不需要更新');
+});
+// 更新下载进度
+autoUpdater.on('download-progress', (progress) => {
+  // 直接把当前的下载进度发送给渲染进程即可，有渲染层自己选择如何做展示
+  console.log('downloadProgress:', progress);
+});
+// 当需要更新的内容下载完成后
+autoUpdater.on('update-downloaded', () => {
+  // 给用户一个提示，然后重启应用；或者直接重启也可以，只是这样会显得很突兀
+  dialog.showMessageBox({
+      title: '安装更新',
+      message: '更新下载完毕，应用将重启并进行安装'
+  }).then(() => {
+      // 退出并安装应用
+      setImmediate(() => autoUpdater.quitAndInstall());
+  });
+});
+
+// 菜单栏
+const aboutMessage = `
+Version: ${app.getVersion()}
+Chrome: ${process.versions.chrome}
+v8: ${process.versions.v8}
+node: ${process.versions.node}
+System: ${os.type()} ${os.arch()} ${os.release()}
+Copyright (c) 2023 xieyuanbin.
+All rights reserved.
+`;
+// macos 特有的菜单
+const osxMenu = {
+  label: app.getName(),
+  submenu: [
+    {
+      label: `关于 ${app.getName()}`,
+      click: () => show('About', aboutMessage, 'info')
+    },
+    { type: 'separator' },
+    {
+      label: `退出 ${app.getName()}`,
+      accelerator: 'CmdOrCtrl+Q',
+      click: () => {
+        app.quit();
+      }
+    }
+  ]
+};
+const menu = [
+  {
+    label: '帮助',
+    submenu: [{ label: '检查更新', click: () => { autoUpdater.checkForUpdates(); } }]
+  }
+];
+if (process.platform === 'darwin') {
+  menu.push(osxMenu);
+}
+const menuList = Menu.buildFromTemplate(menu);
+Menu.setApplicationMenu(menuList);
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
@@ -109,3 +204,14 @@ ipcMain.handle('time:dynasty', (_, args) => {
     throw "文件不存在";
   }
 })
+
+// 自定义方法
+function show(title, detail, type = 'info') {
+  dialog.showMessageBox({
+    icon: join(__dirname, 'public/favicon.png'),
+    title: title,
+    type: type,
+    message: 'vMessenger',
+    detail: detail
+  });
+}

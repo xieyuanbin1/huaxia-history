@@ -48,6 +48,14 @@
       },
     ]
   },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "xieyuanbin1",
+      "repo": "huaxia-history",
+      "releaseType": "release"
+    }
+  ],
   "nsis": {
     "oneClick": false,
     "perMachine": true,
