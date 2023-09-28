@@ -20,7 +20,7 @@
     "icon": "./public/favicon.png",
     "artifactName": "${productName}_${os}_${version}_${arch}.${ext}",
     "target": {
-      "target": "dmg",
+      "target": "default",
       "arch": ["x64", "arm64"]
     },
     "hardenedRuntime": true,
