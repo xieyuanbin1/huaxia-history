@@ -136,6 +136,11 @@ autoUpdater.on('update-available', () => {
     buttons: ['是', '否']
   }).then(({ response }) => {
     if (response === 0) {
+      if (process.platform === 'darwin') {
+        // mac 没有签名不能更新 跳转到 realease 页面
+        shell.openExternal('https://github.com/xieyuanbin1/huaxia-history/releases');
+        return 0;
+      }
       // 下载更新
       autoUpdater.downloadUpdate();
       log.info('[LOG] 更新中...');
