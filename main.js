@@ -120,7 +120,7 @@ autoUpdater.autoDownload = false;
 // 检测下载错误
 autoUpdater.on('error', (error) => {
   log.info('[LOG] 更新错误:', error);
-  dialog.showErrorBox('下载错误', '更新文件下载错误')
+  // dialog.showErrorBox('下载错误', '更新文件下载错误')
 });
 // 检测是否需要更新
 autoUpdater.on('checking-for-update', () => {
