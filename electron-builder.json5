@@ -3,7 +3,7 @@
  */
 {
   "appId": "com.nic.history",
-  "productName": "History",
+  "productName": "HuaXia_History",
   "copyright": "Copyright ©️ 2023 NIC",
   "asar": true,
   "asarUnpack": ["**/*.node"],
@@ -20,7 +20,7 @@
     "icon": "./public/favicon.png",
     "artifactName": "${productName}_${os}_${version}_${arch}.${ext}",
     "target": {
-      "target": "dmg",
+      "target": "default",
       "arch": ["x64", "arm64"]
     },
     "hardenedRuntime": true,
@@ -48,6 +48,14 @@
       },
     ]
   },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "xieyuanbin1",
+      "repo": "huaxia-history",
+      "releaseType": "release"
+    }
+  ],
   "nsis": {
     "oneClick": false,
     "perMachine": true,

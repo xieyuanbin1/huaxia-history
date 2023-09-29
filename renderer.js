@@ -31,29 +31,52 @@ const options = {
   initial_zoom: 21,
   language: 'zh-cn'
 };
+const DEFUALT_DYNATY = 'xia';
 
 // const timeline = new TL.Timeline("timeline", data, options);
 
 $(document).ready(async function() {
   try {
-    const data = await loadTime('xia')
-    const timeline = new TL.Timeline("timeline", data, options);
+    // 初始化数据
+    if ($(location).prop('hash')) {
+      const hash = $(location).prop('hash').substring(1);
+      const targetList = $("#dynasty span");
+      for(const el of targetList) {
+        $(el).css('border-bottom', '');
+        if(el.dataset['dynasty'] === hash) {
+          $(el).css('border-bottom', '1px solid black');
+        }
+      }
+      const data = await loadTime(hash);
+      const timeline = new TL.Timeline("timeline", data, options);
+    } else {
+      const target = $("#dynasty span")[0];
+      $(target).css('border-bottom', '1px solid black');
+      const data = await loadTime(DEFUALT_DYNATY);
+      const timeline = new TL.Timeline("timeline", data, options);
+    }
 
-    console.log('>>>>>>>>>>>>>>>> 1:', $( "#dynasty span" ));
-
-    $("#dynasty span").bind('click', 'daaaaata', (e) => {
-      const { data, target } = e
-      console.log('>>>>>>>>>>> 0:', e)
-      console.log('>>>>>>>>>>> 1:', data)
-      console.log('>>>>>>>>>>> 2:', target)
-      console.log('>>>>>>>>>>> 3:', target.getAttribute('data-dynasty'))
-      console.log('>>>>>>>>>>> 3:', $("#dynasty span").attr('data-dynasty'))
+    $("#dynasty span").bind('click', (e) => {
+      const { target } = e;
+      $("#dynasty span").css('border-bottom', '');
+      $(target).css('border-bottom', '1px solid black');
+      const dynasty = target.dataset['dynasty'];
+      location.hash = dynasty;
     })
 
   } catch (error) {
     alert('数据加载错误，请重启应用');
   }
 })
+
+// 监听 hash 变更
+window.onhashchange = async function() {
+  if ($(location).prop('hash')) {
+    const hash = $(location).prop('hash').substring(1);
+    const data = await loadTime(hash);
+    const timeline = new TL.Timeline("timeline", data, options);
+  }
+}
 
 function loadTime (dynasty) {
   return new Promise((resolve, reject) => {

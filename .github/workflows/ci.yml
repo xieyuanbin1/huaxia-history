@@ -1,0 +1,56 @@
+name: Build APP
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  buildApp:
+    name: build and release app
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+
+    steps:
+      - name: Check out git repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Electron App
+        run: npm run build
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: upload artifacts windows
+        uses: actions/upload-artifact@v3
+        if: matrix.os == 'windows-latest'
+        with:
+          name: ${{ matrix.os }}
+          retention-days: 5
+          path: |
+            release/**/HuaXia_History_*.exe
+            release/**/HuaXia_History_*.zip
+
+      - name: upload artifacts macos
+        uses: actions/upload-artifact@v3
+        if: matrix.os == 'macos-latest'
+        with:
+          name: ${{ matrix.os }}
+          retention-days: 5  # artifact 保留5天
+          path: |
+            release/**/HuaXia_History_*.dmg
+
+      # TODO: 目前不知道这个到底下载到哪里了，无法获取 runner 信息
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
