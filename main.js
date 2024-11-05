@@ -182,11 +182,8 @@ autoUpdater.on('update-downloaded', () => {
 // **************************** 菜单栏 ******************************************
 const aboutMessage = `
 Version: ${app.getVersion()}
-Chrome: ${process.versions.chrome}
-v8: ${process.versions.v8}
-node: ${process.versions.node}
 System: ${os.type()} ${os.arch()} ${os.release()}
-Copyright (c) 2023 xieyuanbin.
+Copyright (c) 2024 xieyuanbin.
 All rights reserved.
 `;
 // macos 特有的菜单

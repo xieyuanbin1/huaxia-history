@@ -31,6 +31,13 @@ sudo spctl --master-disable
 sudo xattr -r -d com.apple.quarantine <app_path>
 ```
 
+## 关于数据映射
+`index.html`
+```html
+<p><span class="dynasty-name" data-dynasty="xizhou">西周</span></p>
+```
+本项目中 `data-dynasty` 朝代 `key` 字段对应 `huaxia-data` 项目中 `data` 文件夹下文件名。
+
 
 ## 变更
 - 2023-09-25
